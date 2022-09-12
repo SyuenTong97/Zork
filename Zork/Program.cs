@@ -11,8 +11,7 @@ namespace Zork
             bool isRunning = true;
             while (isRunning)
             {
-                Console.Write($"{_rooms[_currentRoom]}\n> ");
-
+                Console.Write($"{_rooms[_location.Vertical, _location.Horizontal]}\n> ");
                 string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
 
@@ -66,26 +65,36 @@ namespace Zork
             bool didMove = false;
             switch (command)
             {
-                case Commands.North:
-                case Commands.South:
-                    break;
-
-                case Commands.East when _currentRoom < _rooms.Length - 1:
-                    _currentRoom++;
+                case Commands.North when _location.Vertical < _rooms.GetLength(1) - 1:
+                    _location.Vertical++;
                     didMove = true;
                     break;
-                case Commands.West when _currentRoom > 0:
-                    _currentRoom--;
+                case Commands.South when _location.Vertical > 0:
+                    _location.Vertical--;
+                    didMove = true;
+                    break;
+
+                case Commands.East when _location.Horizontal < _rooms.GetLength(0) - 1:
+                    _location.Horizontal++;
+                    didMove = true;
+                    break;
+                case Commands.West when _location.Horizontal > 0:
+                    _location.Horizontal--;
                     didMove = true;
                     break;
                 default:
-                    didMove = false;
                     break;
             }
             return didMove;
         }
 
-        private static readonly string[] _rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
-        private static int _currentRoom = 1;
+        private static readonly string[,] _rooms =
+        {
+            { "Rocky Trail", "South of House", "Canyon View" },
+            { "Forst", "West of House", "Behind House" },
+            { "Dense Woods", "North of House", "Clearing" }
+        };
+
+        private static (int Vertical, int Horizontal) _location = (1, 1);
     }
 }
