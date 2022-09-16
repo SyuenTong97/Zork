@@ -1,11 +1,22 @@
 ﻿using System;
+using Zork;
 
 namespace Zork
 {
     class Program
     {
+        private static Room CurrentRoom
+        {
+            get
+            {
+                return _rooms[_location.Horizontal, _location.Vertical];
+            }
+        }
+
         static void Main(string[] args)
         {
+            InitalizeRoomDescriptions();
+
             Console.WriteLine("Welcome to Zork!");
 
             bool isRunning = true;
@@ -88,11 +99,26 @@ namespace Zork
             return didMove;
         }
 
-        private static readonly string[,] _rooms =
+        private static void InitalizeRoomDescriptions()
         {
-            { "Rocky Trail", "South of House", "Canyon View" },
-            { "Forst", "West of House", "Behind House" },
-            { "Dense Woods", "North of House", "Clearing" }
+            _rooms[0, 0].Description = "You are on a rock-strewn trail.";
+            _rooms[0, 1].Description = "You are facing the south side of a white house. There is no door here, all the windows are barred.";
+            _rooms[0, 2].Description = "You are at the top of the Great Canyon ";
+
+            _rooms[1, 0].Description = "";
+            _rooms[1, 1].Description = "";
+            _rooms[1, 2].Description = "";
+
+            _rooms[2, 0].Description = "";
+            _rooms[2, 1].Description = "";
+            _rooms[2, 2].Description = "";
+        }
+
+        private static readonly Room[,] _rooms =
+        {
+            { new Room("Rocky Trail"), new Room("South of House"), new Room("Canyon View") },
+            { new Room("Forst"), new Room("West of House"), new Room("Behind House") },
+            { new Room("Dense Woods"), new Room("North of House"), new Room("Clearing") }
         };
 
         private static (int Vertical, int Horizontal) _location = (1, 1);
