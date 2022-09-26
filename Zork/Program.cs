@@ -57,9 +57,9 @@ namespace Zork
                     roomMap.Add(room.Name, room);
                 }
 
-                roomMap["Rocky Trail"].Description = "You are on a rock-strewn trail.";
-                roomMap["South of House"].Description = "You are facing the south side of a white house. There is no door here, all the windows are barred.";
-                roomMap["Canyon View"].Description = "You are at the top of the Great Canyon ";
+            roomMap["Rocky Trail"].Description = "You are on a rock-strewn trail.";
+            roomMap["South of House"].Description = "You are facing the south side of a white house. There is no door here, all the windows are barred.";
+            roomMap["Canyon View"].Description = "You are at the top of the Great Canyon ";
 
                 roomMap["Forest"].Description = "This is a forest, with trees in all directions around you.";
                 roomMap["West of House"].Description = "This is an open field west of a white house, with a boarded front door.";
