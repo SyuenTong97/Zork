@@ -25,8 +25,6 @@ namespace Zork
             bool isRunning = true;
             while (isRunning)
             {
-                Console.WriteLine($"{CurrentRoom}");
-
                 if (previousRoom != CurrentRoom && CurrentRoom.Visited == false)
                 {
                     Console.WriteLine(CurrentRoom.Description);
@@ -34,7 +32,7 @@ namespace Zork
                     CurrentRoom.Visited = true;
                 }
 
-                Console.Write("> ");
+                Console.Write($"{CurrentRoom}\n> ");
 
                 string inputString = Console.ReadLine().Trim();
                 Commands command = ToCommand(inputString);
@@ -47,7 +45,7 @@ namespace Zork
                         outputString = "Thank you for playing!";
                         break;
                     case Commands.Look:
-                        outputString = (CurrentRoom.Description);
+                        outputString = CurrentRoom.Description;
                         break;
                     case Commands.North:
                     case Commands.South:
