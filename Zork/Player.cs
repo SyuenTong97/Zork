@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Zork
 {
-    class Player
+    public class Player
     {
         public World World { get; }
 
