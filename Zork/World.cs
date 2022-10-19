@@ -9,10 +9,24 @@ namespace Zork
     {
         public HashSet<Room> Rooms { get; set; }
 
+        public Item[] Items { get; }
+
         [JsonIgnore]
         public IReadOnlyDictionary<string, Room> RoomsByName => mRoomsByName;
 
+        [JsonIgnore]
+        public Dictionary<string, Item> ItemsByName { get; }
+
         public Player SpawnPlayer() => new Player(this, StartingLocation);
+
+        public World(Item[] items)
+        {
+            Items = items;
+            foreach (Item item in Items)
+            {
+                ItemsByName.Add(item.Name, item);
+            }
+        }
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace Zork
@@ -18,6 +17,20 @@ namespace Zork
 
         [JsonIgnore]
         public Dictionary<Directions, Room> Neighbors { get; private set; }
+
+        [JsonIgnore]
+        public List<Item> Inventory { get; private set; }
+
+        [JsonProperty]
+        private string[] InventoryNames { get; set; }
+
+        public Room(string name, string description, Dictionary<Directions, string> neighborNames, List<Item> inventory, string[] inventoryNames)
+        {
+            Name = name;
+            Description = description;
+            NeighborNames = neighborNames ?? new Dictionary<Directions, string>();
+            InventoryNames = inventoryNames ?? new string[0];
+        }
 
         public static bool operator == (Room lhs, Room rhs)
         {
@@ -46,6 +59,16 @@ namespace Zork
             {
                 Neighbors.Add(entry.Key, world.RoomsByName[entry.Value]);
             }
+        }
+
+        public void UpdateInventory(World world)
+        {
+            Inventory = new List<Item>();
+            foreach (var inventoryName in InventoryNames)
+            {
+                Inventory.Add(world.ItemsByName[inventoryName]);
+            }
+            InventoryNames = null;
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Zork
     public class Player
     {
         public World World { get; }
+        public List<Item> Inventory { get; }
 
         [JsonIgnore]
         public Room Location { get; private set; }
@@ -23,10 +24,19 @@ namespace Zork
             }
         }
 
-        public Player(World world, string startingLocation)
+        public string StartingLocation { get; }
+
+        public Player(World world, string startingLocation, List<Item> inventory)
         {
             World = world;
             LocationName = startingLocation;
+            Inventory = inventory;
+        }
+
+        public Player(World world, string startingLocation)
+        {
+            World = world;
+            StartingLocation = startingLocation;
         }
 
         public bool Move(Directions direction)
