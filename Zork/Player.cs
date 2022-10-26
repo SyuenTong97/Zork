@@ -6,7 +6,10 @@ namespace Zork
     public class Player
     {
         public World World { get; }
+
         public List<Item> Inventory { get; }
+
+        public string StartingLocation { get; }
 
         [JsonIgnore]
         public Room Location { get; private set; }
@@ -23,8 +26,6 @@ namespace Zork
                 Location = World?.RoomsByName.GetValueOrDefault(value);
             }
         }
-
-        public string StartingLocation { get; }
 
         public Player(World world, string startingLocation, List<Item> inventory)
         {

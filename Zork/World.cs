@@ -11,6 +11,8 @@ namespace Zork
 
         public Item[] Items { get; }
 
+        public List<Item> Inventory { get; }
+
         [JsonIgnore]
         public IReadOnlyDictionary<string, Room> RoomsByName => mRoomsByName;
 
@@ -19,9 +21,10 @@ namespace Zork
 
         public Player SpawnPlayer() => new Player(this, StartingLocation);
 
-        public World(Item[] items)
+        public World(Item[] items, List<Item> inventory)
         {
             Items = items;
+            inventory = new List<Item>();
             foreach (Item item in Items)
             {
                 ItemsByName.Add(item.Name, item);
@@ -36,6 +39,7 @@ namespace Zork
             foreach (Room room in Rooms)
             {
                 room.UpdateNeighbors(this);
+                room.UpdateInventory(this);
             }
         }
 

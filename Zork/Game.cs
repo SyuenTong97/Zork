@@ -33,7 +33,27 @@ namespace Zork
                     previousRoom = Player.Location;
                 }
                 Console.Write("\n> ");
-                Commands command = ToCommand(Console.ReadLine().Trim());
+
+                string inputString = Console.ReadLine().Trim();
+                char separator = ' ';
+                string[] commandTokens = inputString.Split(separator);
+
+                string verb = null;
+                string subject = null;
+                if (commandTokens.Length == 0)
+                {
+                    continue;
+                }
+                else if (commandTokens.Length == 1)
+                {
+                    verb = commandTokens[0];
+                }
+                else
+                {
+                    verb = commandTokens[0];
+                    subject = commandTokens[1];
+                }
+                Commands command = ToCommand(verb);
 
                 switch (command)
                 {
@@ -43,6 +63,10 @@ namespace Zork
 
                     case Commands.Look:
                         Console.WriteLine(Player.Location.Description);
+                        foreach (Item item in Player.Location.Inventory)
+                        {
+
+                        }
                         break;
 
                     case Commands.North:
@@ -54,6 +78,12 @@ namespace Zork
                         {
                             Console.WriteLine("The way is shut!");
                         }
+                        break;
+
+                    case Commands.Take:
+                        //if (commandTokens.Lenth == )
+                    case Commands.Drop:
+                    case Commands.Inventory:
                         break;
 
                     default:
