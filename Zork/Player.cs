@@ -27,17 +27,12 @@ namespace Zork
             }
         }
 
-        public Player(World world, string startingLocation, List<Item> inventory)
-        {
-            World = world;
-            LocationName = startingLocation;
-            Inventory = inventory;
-        }
-
         public Player(World world, string startingLocation)
         {
             World = world;
             StartingLocation = startingLocation;
+            LocationName = startingLocation;
+            Inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)

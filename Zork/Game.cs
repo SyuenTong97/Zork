@@ -14,10 +14,10 @@ namespace Zork
         [JsonIgnore]
         private bool IsRunning { get; set; }
 
-        public Game(World world, Player player)
+        public Game(World world, string StartingLocation)
         {
             World = world;
-            Player = player;
+            Player = new Player(World, StartingLocation);
         }
 
         public void Run()
@@ -30,6 +30,10 @@ namespace Zork
                 if (previousRoom != Player.Location)
                 {
                     Console.WriteLine(Player.Location.Description);
+                    foreach (Item item in Player.Location.Inventory)
+                    {
+                        Console.WriteLine(item.Description);
+                    }
                     previousRoom = Player.Location;
                 }
                 Console.Write("\n> ");
@@ -65,7 +69,7 @@ namespace Zork
                         Console.WriteLine(Player.Location.Description);
                         foreach (Item item in Player.Location.Inventory)
                         {
-
+                            Console.WriteLine(item.Description);
                         }
                         break;
 
@@ -76,29 +80,49 @@ namespace Zork
                         Directions direction = Enum.Parse<Directions>(command.ToString(), true);
                         if (Player.Move(direction) == false)
                         {
-                            Console.WriteLine("The way is shut!");
+                            Console.WriteLine("The way is shut!\n");
                         }
                         break;
 
                     case Commands.Take:
-                        //if (commandTokens.Lenth == )
+                        //if (commandTokens.Length == 2)
+                        //{
+                        //    if (string.Equals(commandTokens[1], ))
+                        //    {
+                        //        Console.WriteLine($"Object found. {}\n");
+                        //        continue;
+                        //    }
+                        //    else
+                        //    {
+                        //        Console.WriteLine("You can't see any such thing.\n");
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine("This command requires a subject.\n");
+                        //}
+                        break;
                     case Commands.Drop:
+                        break;
                     case Commands.Inventory:
+                        if (Player.Inventory.Count >= 1)
+                        {
+                            foreach (Item item in Player.Inventory)
+                            {
+                                Console.WriteLine(item.Description);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("You are empty handed.\n");
+                        }
                         break;
 
                     default:
-                        Console.WriteLine("Unknown command.");
+                        Console.WriteLine("Unknown command.\n");
                         break;
                 }
             }
-        }
-
-        public static Game Load(string filename)
-        {
-            Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
-            game.Player = game.World.SpawnPlayer();
-
-            return game;
         }
 
         private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.Unknown;

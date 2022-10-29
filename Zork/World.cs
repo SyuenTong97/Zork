@@ -19,12 +19,10 @@ namespace Zork
         [JsonIgnore]
         public Dictionary<string, Item> ItemsByName { get; }
 
-        public Player SpawnPlayer() => new Player(this, StartingLocation);
-
-        public World(Item[] items, List<Item> inventory)
+        public World(Item[] items)
         {
             Items = items;
-            inventory = new List<Item>();
+            ItemsByName = new Dictionary<string, Item>();
             foreach (Item item in Items)
             {
                 ItemsByName.Add(item.Name, item);
@@ -42,9 +40,6 @@ namespace Zork
                 room.UpdateInventory(this);
             }
         }
-
-        [JsonProperty]
-        private string StartingLocation { get; set; }
 
         private Dictionary<string, Room> mRoomsByName;
     }
