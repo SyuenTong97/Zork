@@ -26,7 +26,7 @@ namespace Zork
             Room previousRoom = null;
             while (IsRunning)
             {
-                Console.WriteLine(Player.Location);
+                Console.WriteLine($"\n{Player.Location}");
                 if (previousRoom != Player.Location)
                 {
                     Console.WriteLine(Player.Location.Description);
@@ -80,29 +80,43 @@ namespace Zork
                         Directions direction = Enum.Parse<Directions>(command.ToString(), true);
                         if (Player.Move(direction) == false)
                         {
-                            Console.WriteLine("The way is shut!\n");
+                            Console.WriteLine("The way is shut!");
                         }
                         break;
 
                     case Commands.Take:
-                        //if (commandTokens.Length == 2)
-                        //{
-                        //    if (string.Equals(commandTokens[1], ))
-                        //    {
-                        //        Console.WriteLine($"Object found. {}\n");
-                        //        continue;
-                        //    }
-                        //    else
-                        //    {
-                        //        Console.WriteLine("You can't see any such thing.\n");
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    Console.WriteLine("This command requires a subject.\n");
-                        //}
+                        if (commandTokens.Length == 2)
+                        {
+                            try
+                            {
+                                Player.Take(subject);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("That item does not exist.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("This command requires a subject.");
+                        }
                         break;
                     case Commands.Drop:
+                        if (commandTokens.Length == 2)
+                        {
+                            try
+                            {
+                                Player.Drop(subject);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("That item does not exist.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("This command requires a subject.");
+                        }
                         break;
                     case Commands.Inventory:
                         if (Player.Inventory.Count >= 1)
@@ -114,12 +128,12 @@ namespace Zork
                         }
                         else
                         {
-                            Console.WriteLine("You are empty handed.\n");
+                            Console.WriteLine("You are empty handed.");
                         }
                         break;
 
                     default:
-                        Console.WriteLine("Unknown command.\n");
+                        Console.WriteLine("Unknown command.");
                         break;
                 }
             }

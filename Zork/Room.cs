@@ -70,5 +70,14 @@ namespace Zork
             }
             InventoryNames = null;
         }
+
+        public void AddToRoomInventory(Item itemToAdd)
+        {
+            Inventory.Add(itemToAdd);
+        }
+        public void RemoveFromRoomInventory(Item itemToRemove)
+        {
+            Inventory.Remove(itemToRemove);
+        }
     }
 }

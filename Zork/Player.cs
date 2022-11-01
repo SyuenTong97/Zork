@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Zork
@@ -43,6 +44,93 @@ namespace Zork
                 Location = destination;
             }
             return isValidMove;
+        }
+
+        public void Take(string itemName)
+        {
+            Item itemToTake = null;
+            foreach (Item item in World.Items)
+            {
+                if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                {
+                    itemToTake = item;
+                    break;
+                }
+            }
+
+            if (itemToTake == null)
+            {
+                throw new ArgumentException("That item does not exist.");
+            }
+
+            bool itemInRoom = false;
+            foreach (Item item in Location.Inventory)
+            {
+                if (item == itemToTake)
+                {
+                    itemInRoom = true;
+                    break;
+                }
+            }
+
+            if (itemInRoom == false)
+            {
+                Console.WriteLine("I see no such thing.");
+            }
+            else
+            {
+                AddToPlayerInventory(itemToTake);
+                Location.RemoveFromRoomInventory(itemToTake);
+                Console.WriteLine($"Taken {itemName}.");
+            }
+        }
+
+        public void Drop(string itemName)
+        {
+            Item itemToDrop = null;
+            foreach (Item item in World.Items)
+            {
+                if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
+                {
+                    itemToDrop = item;
+                    break;
+                }
+            }
+
+            if (itemToDrop == null)
+            {
+                throw new ArgumentException("That item does not exist.");
+            }
+
+            bool itemInRoom = false;
+            foreach (Item item in Inventory)
+            {
+                if (item == itemToDrop)
+                {
+                    itemInRoom = true;
+                    break;
+                }
+            }
+
+            if (itemInRoom == false)
+            {
+                Console.WriteLine("I see no such thing.");
+            }
+            else
+            {
+                RemoveFromPlayerInventory(itemToDrop);
+                Location.AddToRoomInventory(itemToDrop);
+                Console.WriteLine($"Dropped {itemName}.");
+            }
+        }
+
+        void AddToPlayerInventory(Item itemToAdd)
+        {
+            Inventory.Add(itemToAdd);
+        }
+        void RemoveFromPlayerInventory(Item itemToRemove)
+        {
+            Inventory.Remove(itemToRemove);
         }
     }
 }
