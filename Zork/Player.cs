@@ -58,30 +58,32 @@ namespace Zork
                 }
             }
 
-            if (itemToTake == null)
+            if (itemToTake != null)
             {
-                throw new ArgumentException("That item does not exist.");
-            }
-
-            bool itemInRoom = false;
-            foreach (Item item in Location.Inventory)
-            {
-                if (item == itemToTake)
+                bool itemInRoom = false;
+                foreach (Item item in Location.Inventory)
                 {
-                    itemInRoom = true;
-                    break;
+                    if (item == itemToTake)
+                    {
+                        itemInRoom = true;
+                        break;
+                    }
                 }
-            }
 
-            if (itemInRoom == false)
-            {
-                Console.WriteLine("I see no such thing.");
+                if (itemInRoom == false)
+                {
+                    Console.WriteLine("I see no such thing.");
+                }
+                else
+                {
+                    AddToPlayerInventory(itemToTake);
+                    Location.RemoveFromRoomInventory(itemToTake);
+                    Console.WriteLine($"Taken {itemName}.");
+                }
             }
             else
             {
-                AddToPlayerInventory(itemToTake);
-                Location.RemoveFromRoomInventory(itemToTake);
-                Console.WriteLine($"Taken {itemName}.");
+                Console.WriteLine("That item does not exist.");
             }
         }
 
@@ -97,30 +99,32 @@ namespace Zork
                 }
             }
 
-            if (itemToDrop == null)
+            if (itemToDrop != null)
             {
-                throw new ArgumentException("That item does not exist.");
-            }
-
-            bool itemInRoom = false;
-            foreach (Item item in Inventory)
-            {
-                if (item == itemToDrop)
+                bool itemInRoom = false;
+                foreach (Item item in Inventory)
                 {
-                    itemInRoom = true;
-                    break;
+                    if (item == itemToDrop)
+                    {
+                        itemInRoom = true;
+                        break;
+                    }
                 }
-            }
 
-            if (itemInRoom == false)
-            {
-                Console.WriteLine("I see no such thing.");
+                if (itemInRoom == false)
+                {
+                    Console.WriteLine("I see no such thing.");
+                }
+                else
+                {
+                    RemoveFromPlayerInventory(itemToDrop);
+                    Location.AddToRoomInventory(itemToDrop);
+                    Console.WriteLine($"Dropped {itemName}.");
+                }
             }
             else
             {
-                RemoveFromPlayerInventory(itemToDrop);
-                Location.AddToRoomInventory(itemToDrop);
-                Console.WriteLine($"Dropped {itemName}.");
+                Console.WriteLine("That item does not exist.");
             }
         }
 

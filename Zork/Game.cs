@@ -87,14 +87,7 @@ namespace Zork
                     case Commands.Take:
                         if (commandTokens.Length == 2)
                         {
-                            try
-                            {
-                                Player.Take(subject);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("That item does not exist.");
-                            }
+                            Player.Take(subject);
                         }
                         else
                         {
@@ -104,14 +97,7 @@ namespace Zork
                     case Commands.Drop:
                         if (commandTokens.Length == 2)
                         {
-                            try
-                            {
-                                Player.Drop(subject);
-                            }
-                            catch
-                            {
-                                Console.WriteLine("That item does not exist.");
-                            }
+                            Player.Drop(subject);
                         }
                         else
                         {
@@ -121,9 +107,10 @@ namespace Zork
                     case Commands.Inventory:
                         if (Player.Inventory.Count >= 1)
                         {
+                            Console.WriteLine("You are carrying:");
                             foreach (Item item in Player.Inventory)
                             {
-                                Console.WriteLine(item.Description);
+                                Console.WriteLine(item.Name);
                             }
                         }
                         else
