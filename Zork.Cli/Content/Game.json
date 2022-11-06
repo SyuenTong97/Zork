@@ -8,7 +8,7 @@
       },
       {
         "Name": "Mailbox",
-        "Description": "there is a small mailbox here."
+        "Description": "There is a small mailbox here."
       },
       {
         "Name": "Leaves",
@@ -18,8 +18,8 @@
     "Rooms": [
       {
         "Name": "West of House",
-        "Description": "This is an Open field west of a white house, with a boarded front door.",
-        "Neighbors": {
+        "Description": "This is an open field west of a white house, with a boarded front door.",
+        "NeighborNames": {
           "North": "North of House",
           "South": "South of House",
           "West": "Forest 1"
@@ -32,7 +32,7 @@
       {
         "Name": "North of House",
         "Description": "You are facing the north side of a white house. There is no door here, and all the windows are barred.",
-        "Neighbors": {
+        "NeighborNames": {
           "North": "Forest 2",
           "East": "Behind House",
           "West": "West of House"
@@ -41,15 +41,15 @@
       {
         "Name": "South of House",
         "Description": "You are facing the south side of a white house. There is no door here, and all the windows are barred.",
-        "Neighbors": {
+        "NeighborNames": {
           "East": "Behind House",
           "West": "West of House"
         }
       },
       {
         "Name": "Behind House",
-        "Description": "You are behind the white house. In one corner of the houose is a small window which is slightly ajar.",
-        "Neighbors": {
+        "Description": "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.",
+        "NeighborNames": {
           "North": "North of House",
           "East": "Clearing",
           "South": "South of House"
@@ -59,23 +59,23 @@
         "Name": "Forest 1",
         "LookName": "Forest",
         "Description": "This is a forest, with trees in all directions around you.",
-        "Neighbors": {
+        "NeighborNames": {
           "South": "Forest 3",
           "East": "West of House"
         }
       },
       {
         "Name": "Forest 2",
-        "Description": "This is a dimly list forest, with large trees all around. One particularly large tree with some low branches stands here.",
-        "Neighbors": {
+        "Description": "This is a dimly lit forest, with large trees all around. One particularly large tree with some low branches stands here.",
+        "NeighborNames": {
           "South": "Clearing",
           "East": "Clearing"
         }
       },
       {
         "Name": "Forest 3",
-        "Description": "This is a dimly list forest, with large trees all around. To the east, there appears to be sunlight.",
-        "Neighbors": {
+        "Description": "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.",
+        "NeighborNames": {
           "North": "South of House",
           "East": "Clearing"
         }
@@ -83,11 +83,11 @@
       {
         "Name": "Clearing",
         "Description": "You are in a clearing, with a forest surrounding you on the west and south.",
-        "Neighbors": {
+        "NeighborNames": {
           "West": "Forest 2",
           "South": "Forest 3"
         },
-        "InventoryNames": [
+        "IventoryNames": [
           "Leaves"
         ]
       }

@@ -1,55 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
-namespace Zork
+namespace Zork.Common
 {
     public class Player
     {
-        public World World { get; }
+        public Room CurrentRoom
+        {
+            get => _currentRoom;
+            set => _currentRoom = value;
+        }
+
+        public IOutputService Output { get; private set; }
 
         public List<Item> Inventory { get; }
 
-        public string StartingLocation { get; }
-
-        [JsonIgnore]
-        public Room Location { get; private set; }
-
-        [JsonIgnore]
-        public string LocationName
-        {
-            get
-            {
-                return Location?.Name;
-            }
-            set
-            {
-                Location = World?.RoomsByName.GetValueOrDefault(value);
-            }
-        }
-
         public Player(World world, string startingLocation)
         {
-            World = world;
-            StartingLocation = startingLocation;
-            LocationName = startingLocation;
+            _world = world;
+
+            if (_world.RoomsByName.TryGetValue(startingLocation, out _currentRoom) == false)
+            {
+                throw new Exception($"Invalid starting location: {startingLocation}");
+            }
+
             Inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)
         {
-            bool isValidMove = Location.Neighbors.TryGetValue(direction, out Room destination);
-            if (isValidMove)
+            bool didMove = _currentRoom.Neighbors.TryGetValue(direction, out Room neighbor);
+            if (didMove)
             {
-                Location = destination;
+                CurrentRoom = neighbor;
             }
-            return isValidMove;
+
+            return didMove;
         }
 
-        public void Take(string itemName)
+        public string Take(string itemName)
         {
+            string outputString = null;
             Item itemToTake = null;
-            foreach (Item item in World.Items)
+            foreach (Item item in _world.Items)
             {
                 if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
                 {
@@ -61,7 +54,7 @@ namespace Zork
             if (itemToTake != null)
             {
                 bool itemInRoom = false;
-                foreach (Item item in Location.Inventory)
+                foreach (Item item in _currentRoom.Inventory)
                 {
                     if (item == itemToTake)
                     {
@@ -72,25 +65,27 @@ namespace Zork
 
                 if (itemInRoom == false)
                 {
-                    Console.WriteLine("I see no such thing.");
+                    outputString = "I see no such thing.";
                 }
                 else
                 {
                     AddToPlayerInventory(itemToTake);
-                    Location.RemoveFromRoomInventory(itemToTake);
-                    Console.WriteLine($"Taken {itemName}.");
+                    _currentRoom.RemoveFromRoomInventory(itemToTake);
+                    outputString = $"Taken {itemName}.";
                 }
             }
             else
             {
-                Console.WriteLine("That item does not exist.");
+                outputString = "That item does not exist.";
             }
+            return outputString;
         }
 
-        public void Drop(string itemName)
+        public string Drop(string itemName)
         {
+            string outputString = null;
             Item itemToDrop = null;
-            foreach (Item item in World.Items)
+            foreach (Item item in _world.Items)
             {
                 if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
                 {
@@ -113,28 +108,33 @@ namespace Zork
 
                 if (itemInRoom == false)
                 {
-                    Console.WriteLine("I see no such thing.");
+                    outputString = "I see no such thing.";
                 }
                 else
                 {
                     RemoveFromPlayerInventory(itemToDrop);
-                    Location.AddToRoomInventory(itemToDrop);
-                    Console.WriteLine($"Dropped {itemName}.");
+                    _currentRoom.AddToRoomInventory(itemToDrop);
+                    outputString = $"Dropped {itemName}.";
                 }
             }
             else
             {
-                Console.WriteLine("That item does not exist.");
+                outputString = "That item does not exist.";
             }
+            return outputString;
         }
 
         void AddToPlayerInventory(Item itemToAdd)
         {
             Inventory.Add(itemToAdd);
         }
+
         void RemoveFromPlayerInventory(Item itemToRemove)
         {
             Inventory.Remove(itemToRemove);
         }
+
+        private World _world;
+        private Room _currentRoom;
     }
 }

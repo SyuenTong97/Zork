@@ -1,22 +1,19 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
-namespace Zork
+namespace Zork.Common
 {
-    public class Room : IEquatable<Room>
+    public class Room
     {
-        [JsonProperty(Order = 1)]
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        [JsonProperty(Order = 2)]
-        public string Description { get; private set; }
-
-        [JsonProperty(PropertyName = "Neighbors", Order = 3)]
-        private Dictionary<Directions, string> NeighborNames { get; set; }
+        public string Description { get; set; }
 
         [JsonIgnore]
         public Dictionary<Directions, Room> Neighbors { get; private set; }
+
+        [JsonProperty]
+        private Dictionary<Directions, string> NeighborNames { get; set; }
 
         [JsonIgnore]
         public List<Item> Inventory { get; private set; }
@@ -24,7 +21,7 @@ namespace Zork
         [JsonProperty]
         private string[] InventoryNames { get; set; }
 
-        public Room(string name, string description, Dictionary<Directions, string> neighborNames, List<Item> inventory, string[] inventoryNames)
+        public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames)
         {
             Name = name;
             Description = description;
@@ -32,33 +29,45 @@ namespace Zork
             InventoryNames = inventoryNames ?? new string[0];
         }
 
-        public static bool operator == (Room lhs, Room rhs)
+        public static bool operator ==(Room lhs, Room rhs)
         {
             if (ReferenceEquals(lhs, rhs))
             {
                 return true;
             }
+
             if (lhs is null || rhs is null)
             {
                 return false;
             }
-            return lhs.Name == rhs.Name;
+
+            return string.Compare(lhs.Name, rhs.Name, ignoreCase: true) == 0;
         }
 
-        public static bool operator !=(Room lhs, Room rhs) => !(lhs == rhs);
-        public override bool Equals(object obj) => obj is Room room ? this == room : false;
-        public bool Equals(Room other) => this == other;
-        public override string ToString() => Name;
-        public override int GetHashCode() => Name.GetHashCode();
-    
+        public static bool operator !=(Room lhs, Room rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Room other && other == this;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public void UpdateNeighbors(World world)
         {
             Neighbors = new Dictionary<Directions, Room>();
-
-            foreach (var entry in NeighborNames)
+            foreach (var neighborName in NeighborNames)
             {
-                Neighbors.Add(entry.Key, world.RoomsByName[entry.Value]);
+                Neighbors.Add(neighborName.Key, world.RoomsByName[neighborName.Value]);
             }
+
+            NeighborNames = null;
         }
 
         public void UpdateInventory(World world)
@@ -68,6 +77,7 @@ namespace Zork
             {
                 Inventory.Add(world.ItemsByName[inventoryName]);
             }
+
             InventoryNames = null;
         }
 
@@ -75,9 +85,12 @@ namespace Zork
         {
             Inventory.Add(itemToAdd);
         }
+
         public void RemoveFromRoomInventory(Item itemToRemove)
         {
             Inventory.Remove(itemToRemove);
         }
+
+        public override string ToString() => Name;
     }
 }
