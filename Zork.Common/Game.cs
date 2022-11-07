@@ -8,6 +8,8 @@ namespace Zork.Common
 
         public Player Player { get; }
 
+        public IInputService Input { get; private set; }
+
         public IOutputService Output { get; private set; }
 
         public Game(World world, string startingLocation)
@@ -16,7 +18,7 @@ namespace Zork.Common
             Player = new Player(World, startingLocation);
         }
 
-        public void Run(IOutputService output)
+        public void Run(IInputService input, IOutputService output)
         {
             Output = output;
 

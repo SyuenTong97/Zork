@@ -11,8 +11,6 @@ namespace Zork.Common
             set => _currentRoom = value;
         }
 
-        public IOutputService Output { get; private set; }
-
         public List<Item> Inventory { get; }
 
         public Player(World world, string startingLocation)
