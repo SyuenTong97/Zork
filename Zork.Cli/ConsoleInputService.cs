@@ -5,7 +5,8 @@ namespace Zork.Cli
 {
     internal class ConsoleInputService : IInputService
     {
-        public EventHandler<string> InputReceived;
+        public event EventHandler<string> InputReceived;
+
         public void ProcessInput()
         {
             string inputString = Console.ReadLine().Trim();

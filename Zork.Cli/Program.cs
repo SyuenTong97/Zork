@@ -5,7 +5,7 @@ using Zork.Common;
 
 namespace Zork.Cli
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
@@ -16,7 +16,7 @@ namespace Zork.Cli
             var input = new ConsoleInputService();
             var output = new ConsoleOutputService();
 
-            Console.WriteLine("Welcome to Zork!");
+            output.WriteLine("Welcome to Zork!");
             game.Run(input, output);
 
             while (game.IsRunning)
@@ -25,7 +25,7 @@ namespace Zork.Cli
                 input.ProcessInput();
             }
 
-            Console.WriteLine("Finished.");
+            output.WriteLine("Finished.");
         }
 
         private enum CommandLineArguments
