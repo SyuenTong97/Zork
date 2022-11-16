@@ -11,7 +11,7 @@ namespace Zork.Common
             set => _currentRoom = value;
         }
 
-        public List<Item> Inventory { get; }
+        public IEnumerable<Item> Inventory => _inventory;
 
         public Player(World world, string startingLocation)
         {
@@ -22,7 +22,7 @@ namespace Zork.Common
                 throw new Exception($"Invalid starting location: {startingLocation}");
             }
 
-            Inventory = new List<Item>();
+            _inventory = new List<Item>();
         }
 
         public bool Move(Directions direction)
@@ -36,103 +36,26 @@ namespace Zork.Common
             return didMove;
         }
 
-        public string Take(string itemName)
+        public void AddItemToInventory(Item itemToAdd)
         {
-            string outputString = null;
-            Item itemToTake = null;
-            foreach (Item item in _world.Items)
+            if (_inventory.Contains(itemToAdd))
             {
-                if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
-                {
-                    itemToTake = item;
-                    break;
-                }
+                throw new Exception($"Item {itemToAdd} already exists in inventory.");
             }
 
-            if (itemToTake != null)
-            {
-                bool itemInRoom = false;
-                foreach (Item item in _currentRoom.Inventory)
-                {
-                    if (item == itemToTake)
-                    {
-                        itemInRoom = true;
-                        break;
-                    }
-                }
-
-                if (itemInRoom == false)
-                {
-                    outputString = "I see no such thing.";
-                }
-                else
-                {
-                    AddToPlayerInventory(itemToTake);
-                    _currentRoom.RemoveFromRoomInventory(itemToTake);
-                    outputString = $"Taken {itemName}.";
-                }
-            }
-            else
-            {
-                outputString = "That item does not exist.";
-            }
-            return outputString;
+            _inventory.Add(itemToAdd);
         }
 
-        public string Drop(string itemName)
+        public void RemoveItemFromInventory(Item itemToRemove)
         {
-            string outputString = null;
-            Item itemToDrop = null;
-            foreach (Item item in _world.Items)
+            if (_inventory.Remove(itemToRemove) == false)
             {
-                if (string.Compare(item.Name, itemName, ignoreCase: true) == 0)
-                {
-                    itemToDrop = item;
-                    break;
-                }
+                throw new Exception("Could not remove item from inventory.");
             }
-
-            if (itemToDrop != null)
-            {
-                bool itemInRoom = false;
-                foreach (Item item in Inventory)
-                {
-                    if (item == itemToDrop)
-                    {
-                        itemInRoom = true;
-                        break;
-                    }
-                }
-
-                if (itemInRoom == false)
-                {
-                    outputString = "I see no such thing.";
-                }
-                else
-                {
-                    RemoveFromPlayerInventory(itemToDrop);
-                    _currentRoom.AddToRoomInventory(itemToDrop);
-                    outputString = $"Dropped {itemName}.";
-                }
-            }
-            else
-            {
-                outputString = "That item does not exist.";
-            }
-            return outputString;
         }
 
-        void AddToPlayerInventory(Item itemToAdd)
-        {
-            Inventory.Add(itemToAdd);
-        }
-
-        void RemoveFromPlayerInventory(Item itemToRemove)
-        {
-            Inventory.Remove(itemToRemove);
-        }
-
-        private World _world;
+        private readonly World _world;
         private Room _currentRoom;
+        private readonly List<Item> _inventory;
     }
 }

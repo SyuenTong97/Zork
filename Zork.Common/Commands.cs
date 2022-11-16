@@ -5,6 +5,7 @@
         Quit,
         Q = Quit,
         Exit = Quit,
+        Bye = Quit,
         Look,
         L = Look,
         North,
