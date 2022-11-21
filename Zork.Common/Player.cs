@@ -5,11 +5,13 @@ namespace Zork.Common
 {
     public class Player
     {
-        public event EventHandler<int> MovesChanged;
-
         public event EventHandler<Room> LocationChanged;
 
         public event EventHandler<int> RewardsChanged;
+
+        public event EventHandler<int> MovesChanged;
+
+        public IEnumerable<Item> Inventory => _inventory;
 
         public Room CurrentRoom
         {
@@ -23,8 +25,6 @@ namespace Zork.Common
                 }
             }
         }
-
-        public IEnumerable<Item> Inventory => _inventory;
 
         public int Moves 
         {
@@ -99,10 +99,10 @@ namespace Zork.Common
             }
         }
 
+        private readonly List<Item> _inventory;
         private readonly World _world;
         private Room _currentRoom;
-        private readonly List<Item> _inventory;
-        private int _moves;
         private int _rewards;
+        private int _moves;
     }
 }

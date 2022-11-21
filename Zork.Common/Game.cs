@@ -35,7 +35,7 @@ namespace Zork.Common
             Input.InputReceived += OnInputReceived;
             Output.WriteLine("Welcome to Zork!");
             Look();
-            Output.WriteLine($"\n{Player.CurrentRoom}");
+            Output.WriteLine(Player.CurrentRoom);
         }
 
         public void OnInputReceived(object sender, string inputString)
@@ -77,6 +77,7 @@ namespace Zork.Common
                 case Commands.East:
                 case Commands.West:
                     Directions direction = (Directions)command;
+                    Output.WriteLine("");
                     Output.WriteLine(Player.Move(direction) ? $"You moved {direction}." : "The way is shut!");
                     break;
 
@@ -134,8 +135,8 @@ namespace Zork.Common
             {
                 Look();
             }
-
-            Output.WriteLine($"\n{Player.CurrentRoom}");
+            Output.WriteLine(Player.CurrentRoom);
+            Output.WriteLine("");
         }
         
         private void Look()
