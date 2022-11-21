@@ -116,10 +116,18 @@ namespace Zork.Common
                         }
                     }
                     break;
+                case Commands.Reward:
+                    Player.Rewards++;
+                    break;
 
                 default:
                     Output.WriteLine("Unknown command.");
                     break;
+            }
+
+            if (command != Commands.Unknown)
+            {
+                Player.Moves++;
             }
 
             if (ReferenceEquals(previousRoom, Player.CurrentRoom) == false)

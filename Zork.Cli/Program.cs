@@ -18,7 +18,7 @@ namespace Zork.Cli
 
             while (game.IsRunning)
             {
-                game.Output.Write("> ");
+                game.Output.WriteLine("> ");
                 input.ProcessInput();
             }
 
