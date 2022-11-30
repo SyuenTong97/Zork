@@ -45,6 +45,8 @@ namespace Zork.Common
 
             string verb;
             string subject = null;
+            string preposition = null;
+            string thisItem = null;
             if (commandTokens.Length == 0)
             {
                 return;
@@ -53,10 +55,23 @@ namespace Zork.Common
             {
                 verb = commandTokens[0];
             }
+            else if (commandTokens.Length == 2)
+            {
+                verb = commandTokens[0];
+                subject = commandTokens[1];
+            }
+            else if (commandTokens.Length == 3)
+            {
+                verb = commandTokens[0];
+                subject = commandTokens[1];
+                preposition = commandTokens[2];
+            }
             else
             {
                 verb = commandTokens[0];
                 subject = commandTokens[1];
+                preposition = commandTokens[2];
+                thisItem = commandTokens[3];
             }
 
             Room previousRoom = Player.CurrentRoom;
@@ -121,6 +136,25 @@ namespace Zork.Common
                     Player.Rewards++;
                     break;
 
+                case Commands.Attack:
+                    if (string.IsNullOrEmpty(subject))
+                    {
+                        Output.WriteLine("This command requires a subject.");
+                    }
+                    else if (string.IsNullOrEmpty(preposition))
+                    {
+                        Output.WriteLine("With what?");
+                    }
+                    else if (string.IsNullOrEmpty(preposition))
+                    {
+                        Output.WriteLine("With what?");
+                    }
+                    else
+                    {
+                        
+                    }
+                    break;
+
                 default:
                     Output.WriteLine("Unknown command.");
                     break;
@@ -175,6 +209,25 @@ namespace Zork.Common
                 Player.CurrentRoom.AddItemToInventory(itemToDrop);
                 Player.RemoveItemFromInventory(itemToDrop);
                 Output.WriteLine("Dropped.");
+            }
+        }
+
+        private void Attack(string subject, string preprosition, string thisItem)
+        {
+            string correctPreposition = "with";
+            Item itemToAttackWith = Player.Inventory.FirstOrDefault(item => string.Compare(item.Name, thisItem, ignoreCase: true) == 0);
+            bool weapon = itemToAttackWith.IsWeapon;
+            if (string.Compare(preprosition, correctPreposition, ignoreCase: true) == 0)
+            {
+                Output.WriteLine("With what?");
+            }
+            else if (itemToAttackWith == null)
+            {
+                Output.WriteLine("You can't see any such thing.");
+            }
+            else if (weapon == false)
+            {
+                Output.WriteLine($"Can't attack with a {thisItem}.");
             }
         }
 

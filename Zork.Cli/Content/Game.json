@@ -16,6 +16,12 @@
         "Name": "Leaves",
         "LookDescription": "There is a pile of leaves here.",
         "InventoryDescription": "A pile of leaves."
+      },
+      {
+        "Name": "Axe",
+        "LookDescription": "A axe for chopping wood lies here.",
+        "InventoryDescription": "A sharp axe.",
+        "IsWeapon": true
       }
     ],
     "Rooms": [

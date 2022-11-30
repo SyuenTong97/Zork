@@ -22,6 +22,8 @@
         I = Inventory,
         Reward,
         R = Reward,
+        Attack,
+        A = Attack,
         Unknown
     }
 }
