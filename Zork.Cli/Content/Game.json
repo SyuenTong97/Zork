@@ -1,6 +1,14 @@
 {
   "StartingLocation": "West of House",
   "World": {
+    "Enemies": [
+      {
+        "Name": "Troll",
+        "Description": "A large hunking beast.",
+        "DeathDescription": "",
+        "IsEnemy": true
+      }
+    ]
     "Items": [
       {
         "Name": "Mat",

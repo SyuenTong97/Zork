@@ -151,7 +151,7 @@ namespace Zork.Common
                     }
                     else
                     {
-                        
+                        Attack(subject, preposition, thisItem);
                     }
                     break;
 
